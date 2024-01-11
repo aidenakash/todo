@@ -3,13 +3,20 @@ const app = express();
 const dotEnv = require("dotenv");
 const mongoose = require("mongoose");
 
-app.use(express.json());//Parsing Incoming JSON Data:
-app.use((req,res,next)=>{ //Middleware for Request Logging and Timing:
-  req.requestTime = new Date().toISOString();
-  console.log(req.headers);
-  next();
+//router
+const userSignUp = require("./userSignUp/userSignUp.router");
 
-})
+app.use(express.json()); //Parsing Incoming JSON Data:
+app.use((req, res, next) => {
+  //Middleware for Request Logging and Timing:
+  req.requestTime = new Date().toString();
+  console.log({ reqTime: req.requestTime, reqHeader: req.headers });
+
+  next();
+});
+
+//MiddleWare
+app.use("/userSignUp", userSignUp);
 
 dotEnv.config({ path: "./config.env" });
 
