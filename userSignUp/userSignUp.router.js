@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const appError = require("../error/appError");
-const globalErrorController = require("../error/errorControl");
 const inputValidation = require("./userSignUp.inputValidation");
 const controller = require("./userSignUp.controller");
 
@@ -30,5 +29,5 @@ router.delete(
 router.all("*", (req, res, next) => {
   next(new appError(`can't find ${req.originalUrl} in the server`, 404));
 });
-router.use(globalErrorController);
+
 module.exports = router;
