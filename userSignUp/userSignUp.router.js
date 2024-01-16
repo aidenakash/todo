@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const appError = require("../error/appError");
+const idValidation =require("../helpers/helper.idChecking")
 const inputValidation = require("./userSignUp.inputValidation");
 const controller = require("./userSignUp.controller");
 
@@ -12,18 +13,18 @@ router.post(
 );
 router.get(
   "/getUserById/:id",
-  inputValidation.inputIdValidation,
+  idValidation.inputIdValidation,
   controller.findUserById
 );
 router.put(
   "/UpdateUserById/:id",
-  inputValidation.inputIdValidation,
+  idValidation.inputIdValidation,
   inputValidation.updateInputValidation,
   controller.updateUser
 );
 router.delete(
   "/deleteUserById/:id",
-  inputValidation.inputIdValidation,
+  idValidation.inputIdValidation,
   controller.deleteUserById
 );
 router.all("*", (req, res, next) => {
