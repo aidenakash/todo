@@ -3,20 +3,23 @@ const app = express();
 const dotEnv = require("dotenv");
 const mongoose = require("mongoose");
 
-//router
+const appError = require("./error/appError");
+const globalErrorController = require("./error/errorControl");
 const userSignUp = require("./userSignUp/userSignUp.router");
 
+//MiddleWare
 app.use(express.json()); //Parsing Incoming JSON Data:
-app.use((req, res, next) => {
-  //Middleware for Request Logging and Timing:
+app.use((req, res, next) => { //Middleware for Request Logging and Timing:
   req.requestTime = new Date().toString();
   console.log({ reqTime: req.requestTime, reqHeader: req.headers });
-
   next();
 });
 
-//MiddleWare
 app.use("/userSignUp", userSignUp);
+app.all("*", (req, res, next) => {
+  next(new appError(`can't find ${req.originalUrl} in the server`, 404));
+});
+app.use(globalErrorController);
 
 dotEnv.config({ path: "./config.env" });
 
