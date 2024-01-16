@@ -3,28 +3,29 @@ const router = express.Router();
 const appError = require("../error/appError");
 const globalErrorController = require("../error/errorControl");
 const inputValidation = require("./userSignUp.inputValidation");
-const service = require("./userSignUp.services");
+const controller = require("./userSignUp.controller");
 
-router.get("/getAllUser", service.getAllUser);
+router.get("/getAllUser", controller.findAllUser);
 router.post(
   "/createUser",
   inputValidation.createUserInputValidation,
-  service.createUser
+  controller.createUser
 );
 router.get(
   "/getUserById/:id",
   inputValidation.inputIdValidation,
-  service.getUserById
+  controller.findUserById
 );
 router.put(
   "/UpdateUserById/:id",
   inputValidation.inputIdValidation,
-  service.updateUser
+  inputValidation.updateInputValidation,
+  controller.updateUser
 );
 router.delete(
   "/deleteUserById/:id",
   inputValidation.inputIdValidation,
-  service.deleteUserById
+  controller.deleteUserById
 );
 router.all("*", (req, res, next) => {
   next(new appError(`can't find ${req.originalUrl} in the server`, 404));

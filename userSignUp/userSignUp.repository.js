@@ -2,7 +2,7 @@ const { user } = require("./userSignUp.model");
 const mongoose = require("mongoose");
 
 const findAllUser = async () => {
-  return await user.find({$and:[{isDelete:false}]});
+  return await user.find({ $and: [{ isDelete: false }] });
 };
 
 const findUserById = async (id) => {
@@ -10,7 +10,7 @@ const findUserById = async (id) => {
 };
 
 const createUser = async (newUser) => {
-  return await newUser.save();
+  return await user.insertMany(newUser);
 };
 
 const checkEmail = async (email) => {
@@ -19,13 +19,16 @@ const checkEmail = async (email) => {
   return false;
 };
 
-const updateUser = async(id, update)=>{
-
-  return await user.findOneAndUpdate({_id:id },update)
-} 
+const updateUser = async (id, update) => {
+  return await user.findOneAndUpdate(
+    { _id: id },
+    { $set: update },
+    { new: true }
+  );
+};
 
 const deleteUser = async (id) => {
-  return await user.findOneAndUpdate({ _id: id},{isDelete:true});
+  return await user.findOneAndUpdate({ _id: id }, { isDelete: true });
 };
 module.exports = {
   createUser,
