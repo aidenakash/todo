@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const appError = require("./error/appError");
 const globalErrorController = require("./error/errorControl");
 const userSignUp = require("./userSignUp/userSignUp.router");
+const auth = require("./auth/auth.router");
+const todoTask = require("./todoTask/todoTask.router")
 
 //MiddleWare
 app.use(express.json()); //Parsing Incoming JSON Data:
@@ -16,6 +18,8 @@ app.use((req, res, next) => { //Middleware for Request Logging and Timing:
 });
 
 app.use("/userSignUp", userSignUp);
+app.use("/auth", auth);
+app.use("/todoTask",todoTask);
 app.all("*", (req, res, next) => {
   next(new appError(`can't find ${req.originalUrl} in the server`, 404));
 });
